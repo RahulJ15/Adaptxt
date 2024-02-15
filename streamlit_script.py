@@ -6,8 +6,10 @@ import numpy as np
 import PyPDF2
 from googletrans import Translator
 
+from langdetect import detect
+
 # Import the ImageOCR class from your uploaded file
-from handwriting.model import ImageOCR
+from autodetect import ImageOCR
 
 # Initialize the translator
 translator = Translator()
@@ -22,7 +24,7 @@ with st.sidebar:
     # File upload
     uploaded_file = st.file_uploader("Choose a file (PDF, JPG, JPEG, PNG)", type=['pdf', 'jpg', 'jpeg', 'png'])
     # Language selection
-    lang_options = {'Hindi': 'hi', 'French': 'fr', 'Spanish': 'es', 'Mandarin': 'zh-CN'}
+    lang_options = {'Hindi': 'hi','English':'en' ,'French': 'fr', 'Spanish': 'es', 'Mandarin': 'zh-CN'}
     target_lang = st.selectbox("Select target language for translation:", options=list(lang_options.keys()))
 
 # Main content
@@ -40,8 +42,17 @@ if uploaded_file is not None:
         ocr = ImageOCR(image)
         text = ocr.perform_ocr()
 
+
+    # Detect language
+    detected_language = detect(text)
+
+    # Display the detected language
+    
+    st.subheader("Detected Language:")
+    st.markdown(f"**{detected_language}**")
+
     # Display the original English text
-    st.subheader("Original English Text:")
+    st.subheader("Original Text:")
     st.write(text)
 
     # Translate the text
@@ -50,6 +61,12 @@ if uploaded_file is not None:
     # Display the results
     st.subheader(f"Translation to {target_lang}:")
     st.write(translated_text)
+
+        # Summarization button
+    if st.button("Summarize"):
+        summarized_text = ImageOCR.summarize_text(translated_text)
+        st.subheader("Summarized Text:")
+        st.write(summarized_text)
 
 # Footer
 st.markdown("---")
