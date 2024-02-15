@@ -46,7 +46,13 @@ This project is an end-to-end Optical Character Recognition (OCR) and translatio
 
 - Ensure the required libraries are installed using:
   ```bash
-  pip install pillow pytesseract opencv-python googletrans pyPDF2 streamlit
+  pip install pillow
+  pip install pytesseract
+  pip install opencv-python
+  pip install googletrans
+  pip install pyPDF2
+  pip install streamlit
+  pip install nltk
   ```
 - Make sure Tesseract OCR is properly installed on your system.
 
