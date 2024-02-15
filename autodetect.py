@@ -10,17 +10,7 @@ import heapq
 
 import langdetect #pip install langdetect
 from langdetect import detect
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize, sent_tokenize
-from nltk.tag import pos_tag
-from nltk import ne_chunk
-import nltk
 
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('maxent_ne_chunker')
-nltk.download('words')
-nltk.download('averaged_perceptron_tagger')
 
 
 class ImageOCR:
