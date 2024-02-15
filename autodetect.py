@@ -96,7 +96,7 @@ class ImageOCR:
         print("1. Hindi")
         print("2. French")
         print("3. Spanish")
-        print("4. Mandarin")
+        print("4. Chinese")
         print("5. English")
         choice = input("Enter the number of your choice: ")
         languages = {'1': 'hi', '2': 'fr', '3': 'es', '4': 'zh-cn', '5': 'en'}
@@ -116,47 +116,6 @@ class ImageOCR:
             detected_lang = "unknown"
         return detected_lang
 
-    def summarize_text(self, text):
-        stopwords_list = set(stopwords.words('english'))
-        sentence_list = sent_tokenize(text)
-        frequency_map = {}
-        word_list = word_tokenize(text)
-
-        def extract_named_entities(text):
-            entities = []
-            words = word_tokenize(text)
-            pos_tags = pos_tag(words)
-            named_entities = ne_chunk(pos_tags)
-            for entity in named_entities:
-                if isinstance(entity, tuple):
-                    entities.append(entity[0])
-                else:
-                    entities.extend([word[0] for word in entity.leaves()])
-            return entities
-
-        for word in word_list:
-            if word.lower() not in stopwords_list:
-                frequency_map[word] = frequency_map.get(word, 0) + 1
-
-        named_entities = extract_named_entities(text)
-        for entity in named_entities:
-            if entity.lower() not in stopwords_list:
-                frequency_map[entity] = frequency_map.get(entity, 0) + 1
-
-        max_frequency = max(frequency_map.values(), default=1)
-
-        for word in frequency_map:
-            frequency_map[word] = frequency_map[word] / max_frequency
-
-        sent_scores = {}
-
-        for sent in sentence_list:
-            for word in word_tokenize(sent):
-                if word in frequency_map and len(sent.split(' ')) < 35:
-                    sent_scores[sent] = sent_scores.get(sent, 0) + frequency_map[word]
-
-        summary = heapq.nlargest(3, sent_scores, key=sent_scores.get)
-        return ' '.join(summary)
 
     def process_pdf_and_summarize(self):
         pdf_text = self.extract_text_from_pdf()
@@ -170,9 +129,6 @@ class ImageOCR:
         translated_text = self.translate_text(pdf_text, target_language)
         print("Translated Text from PDF:")
         print(translated_text)
-
-        summarized_text = self.summarize_text(translated_text)
-
 
 
 if __name__ == "__main__":
@@ -198,8 +154,6 @@ if __name__ == "__main__":
             print("Translated Text:")
             print(translated_text)
 
-            summarized_text = ocr_processor.summarize_text(translated_text)
-            print("\nSummarized Text:")
-            print(summarized_text)
+
     else:
         print("Invalid file format. Supported formats: PDF, JPG, JPEG, PNG.")
