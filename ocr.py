@@ -1,3 +1,4 @@
+#This is our base OCR model that reads text from images and files and performs pre processing for a more accurate result
 from PIL import Image
 import pytesseract
 import cv2
@@ -6,9 +7,7 @@ import os
 from googletrans import Translator
 import PyPDF2
 import heapq
-
-
-import langdetect #pip install langdetect
+import langdetect 
 from langdetect import detect
 
 
