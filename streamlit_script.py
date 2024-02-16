@@ -22,7 +22,14 @@ target_lang = st.sidebar.selectbox("Select target language for translation:", op
 
 
 def get_stopwords(language):
-    return set(stopwords.words(language))
+    if language == 'hi':
+            # Load Hindi stopwords from the custom file
+            with open('hindi_words.txt', 'r', encoding='utf-8') as file:
+                stopwords_list = [line.strip() for line in file]
+            return set(stopwords_list)
+    else:
+        return set(stopwords.words('english'))
+
 
 def summarize_text(text, summary_percentage=0.30, language='english'):
     # Tokenize the text into sentences
@@ -41,12 +48,9 @@ def summarize_text(text, summary_percentage=0.30, language='english'):
     # Score sentences based on TF-IDF scores
     sentence_scores = {}
     for sentence in sentences:
-        for word in word_tokenize(sentence.lower()):
-            if word in word_tfidf_scores:
-                if sentence not in sentence_scores:
-                    sentence_scores[sentence] = word_tfidf_scores[word]
-                else:
-                    sentence_scores[sentence] += word_tfidf_scores[word]
+        sentence_words = [word.lower() for word in word_tokenize(sentence) if word.lower() not in stop_words and word.isalnum()]
+        sentence_tfidf_score = sum(word_tfidf_scores.get(word, 0) for word in sentence_words)
+        sentence_scores[sentence] = sentence_tfidf_score
     
     # Calculate the summary length based on the percentage of total sentences
     summary_length = max(int(len(sentences) * summary_percentage), 1)
