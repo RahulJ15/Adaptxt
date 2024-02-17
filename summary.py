@@ -1,6 +1,5 @@
-# This is our extractive based summary model that works for 4 languages- English,Spanish,French and Hindi
-#  Since the structure of summarizing sentences in Hindi is different as comapred to english spanish and french it is not as as reliable.
-
+from googletrans import Translator
+from langdetect import detect
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize, word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -15,7 +14,20 @@ def get_stopwords(language):
     else:
         return set(stopwords.words('english'))
 
-def summarize_text(text, summary_percentage=0.30, language='english'):
+def summarize_and_translate(text, summary_percentage=0.45, target_language='spanish'):
+    # Step 1: Summarize the text in English
+    english_summary = summarize_text(text, summary_percentage)
+    
+    # Step 2: Translate the original text to the target language
+    translator = Translator()
+    translated_text = translator.translate(text, dest=target_language).text
+    
+    # Step 3: Translate the English summary to the target language
+    translated_summary = translator.translate(english_summary, dest=target_language).text
+    
+    return translated_text, translated_summary
+
+def summarize_text(text, summary_percentage=0.45, language='english'):
     # Tokenize the text into sentences
     sentences = sent_tokenize(text)
     
