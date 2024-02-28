@@ -9,6 +9,31 @@ import PyPDF2
 import heapq
 import langdetect 
 from langdetect import detect
+import tkinter as tk
+
+class LanguageSelectorGUI:
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.title("Language Selector")
+
+        self.label = tk.Label(self.root, text="Select a target language for translation:")
+        self.label.pack()
+
+        self.languages = {'1': 'Hindi', '2': 'French', '3': 'Spanish', '4': 'Chinese', '5': 'English'}
+
+        for key, value in self.languages.items():
+            button = tk.Button(self.root, text=f"{key}. {value}", command=lambda k=key: self.select_language(k))
+            button.pack()
+
+    def select_language(self, choice):
+        selected_language = self.languages.get(choice, 'English')
+        print(f"Selected language: {selected_language}")
+        # You can add further processing here, such as returning the selected language or calling other functions.
+
+    def run(self):
+        self.root.mainloop()
+
+
 
 
 class ImageOCR:
@@ -80,15 +105,9 @@ class ImageOCR:
         return translated.text
 
     def select_target_language(self):
-        print("Select a target language for translation:")
-        print("1. Hindi")
-        print("2. French")
-        print("3. Spanish")
-        print("4. Chinese")
-        print("5. English")
-        choice = input("Enter the number of your choice: ")
-        languages = {'1': 'hi', '2': 'fr', '3': 'es', '4': 'zh-cn', '5': 'en'}
-        return languages.get(choice, 'en')
+        # Create an instance of the LanguageSelectorGUI class and run the GUI.
+        language_selector = LanguageSelectorGUI()
+        language_selector.run()
 
     def extract_text_from_pdf(self):
         pdf_text = ""
