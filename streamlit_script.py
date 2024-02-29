@@ -3,15 +3,15 @@ from langdetect import detect
 import streamlit as st
 from PIL import Image
 import PyPDF2
-
-from ocr import ImageOCR  # calling OCR model
-from summary import summarize_and_translate  # calling modified summary model
+import io
+import easyocr
+from summary import  summarize_and_translate
 
 # Initialize the translator
 translator = Translator()
 
 # Streamlit user interface setup
-st.title('Adaptxt: Recognition, Translation, and Summarization')
+st.title('OCR, Translation, and Summarization')
 
 # Sidebar for file upload and language selection
 uploaded_file = st.sidebar.file_uploader("Choose a file (PDF, JPG, JPEG, PNG)", type=['pdf', 'jpg', 'jpeg', 'png'])
@@ -27,10 +27,15 @@ if uploaded_file is not None:
         for page_num in range(len(reader.pages)):
             text += reader.pages[page_num].extract_text()
     else:
-        # Perform OCR on the image
+        # Perform OCR on the image using EasyOCR
         image = Image.open(uploaded_file)
-        ocr = ImageOCR(image)
-        text = ocr.perform_ocr()
+        img_byte_array = io.BytesIO()
+        image.save(img_byte_array, format='PNG')
+        img_byte_array = img_byte_array.getvalue()
+        
+        reader = easyocr.Reader(['en'], gpu=False)
+        result = reader.readtext(img_byte_array)
+        text = " ".join([entry[1] for entry in result])
 
     if text is not None:
         # Detect language and display it
@@ -43,7 +48,6 @@ if uploaded_file is not None:
         st.write(text)
 
         try:
-
             # Translate the text and display it
             translated_text = translator.translate(text, dest=lang_options[target_lang]).text
             st.subheader(f"Translated Text ({target_lang}):")
@@ -51,11 +55,11 @@ if uploaded_file is not None:
 
             # Summarize and translate the text only when the button is clicked
             if st.button("Summarize"):
+                # Modify this part according to your summarized_and_translate function
                 translated_summary = summarize_and_translate(text, target_language=lang_options[target_lang])
-
-                # Display the translated summary
                 st.subheader(f"Summary ({target_lang}):")
                 st.write(translated_summary[1])
+                #st.write("Summarization not implemented yet.")
 
         except Exception as e:
             st.error(f"Error during translation or summarization:{e}")

@@ -14,7 +14,7 @@ def get_stopwords(language):
     else:
         return set(stopwords.words('english'))
 
-def summarize_and_translate(text, summary_percentage=0.45, target_language='spanish'):
+def summarize_and_translate(text, summary_percentage=0.45, target_language='english'):
     # Step 1: Summarize the text in English
     english_summary = summarize_text(text, summary_percentage)
     
@@ -23,7 +23,12 @@ def summarize_and_translate(text, summary_percentage=0.45, target_language='span
     translated_text = translator.translate(text, dest=target_language).text
     
     # Step 3: Translate the English summary to the target language
-    translated_summary = translator.translate(english_summary, dest=target_language).text
+    translated_summary = translator.translate(english_summary, dest=target_language)
+    if translated_summary:
+        translated_summary = translated_summary.text
+    else:
+        translated_summary = "Summary translation not available"
+
     
     return translated_text, translated_summary
 
