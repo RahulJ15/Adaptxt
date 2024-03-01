@@ -1,5 +1,5 @@
 
-# OCR and Translation Model
+# Character Recognition,Translation and Summarization Model
 
 **Overview:**
 
