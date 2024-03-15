@@ -11,7 +11,7 @@ from summary import  summarize_and_translate
 translator = Translator()
 
 # Streamlit user interface setup
-st.title('OCR, Translation, and Summarization')
+st.title('Adaptxt: OCR, Translation, and Summarization')
 
 # Sidebar for file upload and language selection
 uploaded_file = st.sidebar.file_uploader("Choose a file (PDF, JPG, JPEG, PNG)", type=['pdf', 'jpg', 'jpeg', 'png'])
