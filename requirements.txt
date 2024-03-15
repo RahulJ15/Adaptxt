@@ -8,3 +8,5 @@ easyocr
 nltk
 PyMuPDF
 summary
+scikit-learn
+
