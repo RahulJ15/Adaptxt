@@ -1,1 +1,7 @@
 googletrans
+streamlit
+langdetect
+translator  # likely refers to googletrans
+PyPDF2
+Pillow  # likely refers to PIL (Python Imaging Library)
+easyocr
