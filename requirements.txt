@@ -1,5 +1,5 @@
 
-googletrans>=4.0.0
+googletrans
 streamlit
 langdetect
 translator  # likely refers to googletrans
