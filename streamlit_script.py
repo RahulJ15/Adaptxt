@@ -5,6 +5,7 @@ from PIL import Image
 import PyPDF2
 import io
 import easyocr
+import fitz
 from summary import  summarize_and_translate
 
 # Initialize the translator
