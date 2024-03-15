@@ -7,4 +7,4 @@ Pillow  # likely refers to PIL (Python Imaging Library)
 easyocr
 nltk
 PyMuPDF
-
+summary
