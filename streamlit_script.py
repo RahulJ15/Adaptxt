@@ -10,7 +10,7 @@ from summary import  summarize_and_translate
 import nltk
 
 # Download NLTK tokenizer data
-nltk.download('punkt')
+nltk.download()
 
 # Initialize the translator
 translator = Translator()
