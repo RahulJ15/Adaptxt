@@ -7,6 +7,7 @@ import io
 import easyocr
 import fitz
 from summary import  summarize_and_translate
+import speech_recognition as sr
 # Initialize the translator
 translator = Translator()
 
