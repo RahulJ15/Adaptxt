@@ -9,4 +9,5 @@ nltk
 PyMuPDF
 summary
 scikit-learn
+speech_recognition
 
