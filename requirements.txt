@@ -10,4 +10,4 @@ PyMuPDF
 summary
 scikit-learn
 SpeechRecognition
-pyaudio
+audio
