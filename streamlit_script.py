@@ -10,6 +10,9 @@ from summary import  summarize_and_translate
 # Initialize the translator
 translator = Translator()
 
+import nltk
+nltk.download('popular')
+
 # Streamlit user interface setup
 st.title('Adaptxt: OCR, Translation, and Summarization')
 
