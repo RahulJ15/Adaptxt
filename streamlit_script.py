@@ -7,7 +7,7 @@ import io
 import easyocr
 import fitz
 from summary import  summarize_and_translate
-from audio import record_text 
+from stt import record_text 
 import speech_recognition as sr
 # Initialize the translator
 translator = Translator()
