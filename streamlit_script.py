@@ -7,6 +7,10 @@ import io
 import easyocr
 import fitz
 from summary import  summarize_and_translate
+import nltk
+
+# Download NLTK tokenizer data
+nltk.download('punkt')
 
 # Initialize the translator
 translator = Translator()
