@@ -11,3 +11,4 @@ summary
 scikit-learn
 SpeechRecognition
 stt
+pyaudio
