@@ -54,13 +54,16 @@ if uploaded_file is not None:
             st.subheader(f"Translated Text ({target_lang}):")
             st.write(translated_text)
 
-            # Summarize and translate the text only when the button is clicked
             if st.button("Summarize"):
-                # Modify this part according to your summarized_and_translate function
-                translated_summary = summarize_and_translate(text, target_language=lang_options[target_lang])
-                st.subheader(f"Summary ({target_lang}):")
-                st.write(translated_summary[1])
-                #st.write("Summarization not implemented yet.")
+             try:
+                 translated_summary = summarize_and_translate(text, target_language=lang_options[target_lang])
+                 if translated_summary[1]:
+                    st.subheader(f"Summary ({target_lang}):")
+                    st.write(translated_summary[1])
+                 else:
+                     st.write("Summary translation not available.")
+             except Exception as e:
+                st.error(f"Error during translation or summarization: {e}")
 
         except Exception as e:
             st.error(f"Error during translation or summarization:{e}")
