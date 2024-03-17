@@ -9,6 +9,3 @@ nltk
 PyMuPDF
 summary
 scikit-learn
-SpeechRecognition
-stt
-pyaudio

@@ -7,7 +7,6 @@ import io
 import easyocr
 import fitz
 from summary import  summarize_and_translate
-from stt import record_text 
 import speech_recognition as sr
 # Initialize the translator
 translator = Translator()
@@ -24,17 +23,7 @@ lang_options = {'Hindi': 'hi', 'English': 'en', 'French': 'fr', 'Spanish': 'es',
 target_lang = st.sidebar.selectbox("Select target language for translation:", options=list(lang_options.keys()))
 
 
-# Function to record audio and get text
-def get_recorded_text():
-    st.write("Listening for audio input...")
-    recorded_text = record_text()
-    if recorded_text:
-        st.write(recorded_text)
-        translated_recorded_text = translator.translate(recorded_text, dest=lang_options[target_lang]).text
-        st.subheader(f"Translated Audio Text ({target_lang}):")
-        st.write(translated_recorded_text)
-    else:
-        st.write("No audio input detected.")
+
 
 
 # Main content
@@ -89,6 +78,3 @@ if uploaded_file is not None:
     else:
         st.write("No text could be extracted.")
 
-# Button for speech-to-text functionality in the sidebar
-if st.sidebar.button("Speech to Text"):
-    get_recorded_text()
