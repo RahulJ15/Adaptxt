@@ -11,4 +11,4 @@ summary
 scikit-learn
 pyaudio
 stt
-speech_recognition
+SpeechRecognition
