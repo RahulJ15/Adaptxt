@@ -5,15 +5,20 @@ from PIL import Image
 import PyPDF2
 import io
 import easyocr
-from stt import record_text  # Importing the record_text function
+import fitz
+from summary import  summarize_and_translate
+from stt import  record_text
 
 # Initialize the translator
 translator = Translator()
 
+import nltk
+nltk.download('popular')
+
 # Streamlit user interface setup
 st.title('Adaptxt: OCR, Translation, and Summarization')
 
-# Sidebar for file upload, language selection, and speech to text button
+# Sidebar for file upload and language selection
 uploaded_file = st.sidebar.file_uploader("Choose a file (PDF, JPG, JPEG, PNG)", type=['pdf', 'jpg', 'jpeg', 'png'])
 lang_options = {'Hindi': 'hi', 'English': 'en', 'French': 'fr', 'Spanish': 'es', 'Chinese': 'zh-CN'}
 target_lang = st.sidebar.selectbox("Select target language for translation:", options=list(lang_options.keys()))
@@ -49,7 +54,7 @@ if uploaded_file is not None:
         result = reader.readtext(img_byte_array)
         text = " ".join([entry[1] for entry in result])
 
-    if text:
+    if text is not None:
         # Detect language and display it
         detected_language = detect(text)
         st.subheader("Detected Language:")
@@ -65,13 +70,19 @@ if uploaded_file is not None:
             st.subheader(f"Translated Text ({target_lang}):")
             st.write(translated_text)
 
-            # Summarize and translate the text only when the button is clicked
             if st.button("Summarize"):
-                # Your summarization logic goes here
-                pass
+             try:
+                 translated_summary = summarize_and_translate(text, target_language=lang_options[target_lang])
+                 if translated_summary[1]:
+                    st.subheader(f"Summary ({target_lang}):")
+                    st.write(translated_summary[1])
+                 else:
+                     st.write("Summary translation not available.")
+             except Exception as e:
+                st.error(f"Error during translation or summarization: {e}")
 
         except Exception as e:
-            st.error(f"Error during translation or summarization: {e}")
+            st.error(f"Error during translation or summarization:{e}")
 
     else:
         st.write("No text could be extracted.")
@@ -79,3 +90,4 @@ if uploaded_file is not None:
 # Button for speech-to-text functionality in the sidebar
 if st.sidebar.button("Speech to Text"):
     get_recorded_text()
+
