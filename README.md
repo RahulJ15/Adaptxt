@@ -1,6 +1,8 @@
 
 # Character Recognition,Translation and Summarization Model
 
+https://adaptxt.streamlit.app/
+
 **Overview:**
 
 This project is an end-to-end Optical Character Recognition (OCR) and translation model designed to extract text from images and PDFs, and then translate it into multiple languages. The implementation is done in Python using the Tesseract OCR engine, OpenCV for image processing, Googletrans for translation, and Streamlit for the frontend.
