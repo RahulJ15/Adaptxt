@@ -58,15 +58,4 @@ This project is an end-to-end Optical Character Recognition (OCR) and translatio
   ```
 - Make sure Tesseract OCR is properly installed on your system.
 
-- Run the Streamlit application script:
-  ```bash
-  streamlit run streamlit_script.py
-  ```
 
-**Example:**
-
-Visit `http://localhost:8501` in your web browser to access the Streamlit application.
-
-Feel free to explore and enhance this project for your specific use case. Contributions and suggestions are welcome!
-
---- 
