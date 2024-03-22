@@ -4,7 +4,7 @@ r = sr.Recognizer()
 
 def record_text():
     """Records audio input and returns the transcribed text."""
-    with sr.Microphone() as source:
+    with sr.Microphone(device_index=1) as source:
         r.adjust_for_ambient_noise(source, duration=0.2)
         print("Listening...")
         audio = r.listen(source)
