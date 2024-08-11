@@ -5,6 +5,10 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 import heapq
 
+import nltk
+nltk.download('punkt')
+
+
 def get_stopwords(language):
     if language == 'hi':
         # Load Hindi stopwords from the custom file
