@@ -1,4 +1,4 @@
-from googletrans import Translator
+from googletrans import Translator, LANGUAGES
 from langdetect import detect
 from nltk.corpus import stopwords
 from nltk.tokenize import sent_tokenize, word_tokenize
@@ -8,29 +8,36 @@ import heapq
 def get_stopwords(language):
     if language == 'hi':
         # Load Hindi stopwords from the custom file
-        with open('hindi_words.txt', 'r', encoding='utf-8') as file:
-            stopwords_list = [line.strip() for line in file]
-        return set(stopwords_list)
+        try:
+            with open('hindi_words.txt', 'r', encoding='utf-8') as file:
+                stopwords_list = [line.strip() for line in file]
+            return set(stopwords_list)
+        except FileNotFoundError:
+            print("Hindi stopwords file not found.")
+            return set()
     else:
         return set(stopwords.words('english'))
 
-def summarize_and_translate(text, summary_percentage=0.45, target_language='english'):
-    # Step 1: Summarize the text in English
-    english_summary = summarize_text(text, summary_percentage)
+def summarize_and_translate(text, summary_percentage=0.45, target_language='en'):
+    try:
+        # Detect the language of the text
+        detected_language = detect(text)
+        
+        # Step 1: Summarize the text in English
+        english_summary = summarize_text(text, summary_percentage, detected_language)
+        
+        # Step 2: Translate the original text to the target language
+        translator = Translator()
+        translated_text = translator.translate(text, dest=target_language).text
+        
+        # Step 3: Translate the English summary to the target language
+        translated_summary = translator.translate(english_summary, dest=target_language).text
+        
+        return translated_text, translated_summary
     
-    # Step 2: Translate the original text to the target language
-    translator = Translator()
-    translated_text = translator.translate(text, dest=target_language).text
-    
-    # Step 3: Translate the English summary to the target language
-    translated_summary = translator.translate(english_summary, dest=target_language)
-    if translated_summary:
-        translated_summary = translated_summary.text
-    else:
-        translated_summary = "Summary translation not available"
-
-    
-    return translated_text, translated_summary
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return text, "Translation or summarization failed."
 
 def summarize_text(text, summary_percentage=0.45, language='english'):
     # Tokenize the text into sentences
@@ -59,4 +66,5 @@ def summarize_text(text, summary_percentage=0.45, language='english'):
     # Select the top 'summary_length' sentences with the highest scores
     summary_sentences = heapq.nlargest(summary_length, sentence_scores, key=sentence_scores.get)
     summary = ' '.join(summary_sentences)
+    
     return summary
